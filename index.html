@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CTA Section – UI Mockup</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; background: #f0f2f5; min-height: 100vh; padding: 24px 16px; }
+    .tab-bar { display: flex; justify-content: center; gap: 8px; margin-bottom: 24px; }
+    .tab-btn { padding: 9px 24px; font-size: 13px; font-weight: 600; cursor: pointer; border-radius: 6px; }
+    .page-title { text-align: center; font-size: 17px; font-weight: 600; letter-spacing: .06em; color: #333; margin-bottom: 16px; }
+    .section-card { border: 1px solid #ddd; border-radius: 6px; background: #fff; margin-bottom: 16px; overflow: visible; max-width: 900px; margin-left: auto; margin-right: auto; }
+    .section-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; border-bottom: 1px solid #eee; }
+    .section-header-title { font-size: 14px; font-weight: 600; letter-spacing: .06em; color: #333; text-align: center; flex: 1; }
+    .header-side { width: 72px; flex-shrink: 0; display: flex; justify-content: flex-end; gap: 6px; }
+    .icon-btn { border: 1px solid #ccc; border-radius: 5px; background: #fff; color: #888; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 15px; flex-shrink: 0; }
+    .section-body { padding: 18px 20px; }
+    .field-group { margin-bottom: 14px; }
+    .field-label { font-size: 12px; font-weight: 700; color: #333; display: block; margin-bottom: 5px; }
+    .field-input { width: 100%; border-radius: 4px; padding: 9px 12px; font-size: 13px; background-color: #e8ecf0; border: 1px solid #d8dce0; color: #555; font-family: Arial, sans-serif; }
+    .field-input:focus { outline: 2px solid #e8521a; outline-offset: -1px; }
+    .select-wrap { position: relative; width: 100%; }
+    .select-wrap select { width: 100%; border-radius: 4px; padding: 9px 36px 9px 12px; font-size: 13px; background-color: #e8ecf0; border: 1px solid #d8dce0; color: #555; appearance: none; -webkit-appearance: none; font-family: Arial, sans-serif; }
+    .select-wrap select:focus { outline: 2px solid #e8521a; outline-offset: -1px; }
+    .select-arrow { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+    .char-hint { font-size: 11px; color: #888; text-align: right; margin-top: 2px; }
+    .validation-msg { font-size: 11px; color: #c0392b; margin-top: 3px; display: none; }
+    .date-wrap { position: relative; }
+    .date-wrap .field-input { padding-right: 36px; }
+    .cal-icon { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); }
+    .picker-dropdown { display: none; position: absolute; top: calc(100% + 4px); left: 0; z-index: 200; background: #fff; border: 1px solid #d8dce0; border-radius: 6px; padding: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.12); min-width: 240px; }
+    .picker-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+    .picker-nav { background: none; border: none; cursor: pointer; font-size: 18px; color: #666; padding: 2px 6px; line-height: 1; }
+    .picker-month-label { font-size: 13px; font-weight: 700; color: #333; }
+    .picker-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+    .picker-day-header { text-align: center; font-size: 11px; font-weight: 700; color: #888; padding: 2px 0; }
+    .picker-day { text-align: center; font-size: 12px; padding: 5px 2px; border-radius: 3px; cursor: pointer; color: #444; }
+    .picker-day:hover { background: #f0f0f0; }
+    .picker-day.today { background: #fce8e0; color: #e8521a; font-weight: 700; }
+    .picker-day.selected { background-color: #e8521a; color: #fff; font-weight: 700; }
+    .picker-day.empty { cursor: default; pointer-events: none; }
+    .radio-group { display: flex; gap: 10px; flex-wrap: wrap; padding: 4px 0; }
+    .radio-opt { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #444; cursor: pointer; user-select: none; }
+    .radio-circle { width: 15px; height: 15px; border-radius: 50%; border: 1.5px solid #bbb; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .radio-dot { width: 8px; height: 8px; border-radius: 50%; background-color: #e8521a; display: none; }
+    .divider { border: none; border-top: 1px solid #eee; margin: 16px 0; }
+  </style>
+</head>
+<body>
+
+  <div class="tab-bar">
+    <button class="tab-btn" id="btn-data" onclick="switchTab('data')">With Data</button>
+    <button class="tab-btn" id="btn-empty" onclick="switchTab('empty')">Empty State</button>
+  </div>
+
+  <p class="page-title">BUSINESS OVERVIEW</p>
+
+  <!-- WITH DATA -->
+  <div id="tab-data" class="tab-content">
+    <div class="section-card">
+      <div class="section-header">
+        <div style="width:72px;flex-shrink:0"></div>
+        <span class="section-header-title">CALL TO ACTION</span>
+        <div class="header-side">
+          <div id="d-edit-btn" class="icon-btn" onclick="enterEdit('d')" title="Edit">&#9998;</div>
+          <div id="d-cancel-btn" class="icon-btn" onclick="exitEdit('d','cancel')" title="Cancel" style="display:none">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M13 3L8 8M3 13L8 8M8 8L3 3M8 8L13 13" stroke="#888" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div id="d-save-btn" class="icon-btn" onclick="exitEdit('d','save')" title="Save" style="display:none;background-color:#e8521a;border-color:#e8521a;">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="1.5" stroke="#fff" stroke-width="1.2" fill="none"/><rect x="5" y="2" width="6" height="4" rx="0.5" fill="#fff"/><rect x="3.5" y="8" width="9" height="5.5" rx="0.5" fill="#fff"/><rect x="5.5" y="9" width="2" height="3.5" rx="0.3" fill="#e8521a"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="field-group">
+          <span class="field-label">Platform</span>
+          <div class="radio-group" id="d-platform-group">
+            <label class="radio-opt" id="d-plat-0"><div class="radio-circle" style="border-color:#e8521a"><div class="radio-dot" style="display:block"></div></div>Desktop + Mobile</label>
+            <label class="radio-opt" id="d-plat-1"><div class="radio-circle"><div class="radio-dot"></div></div>Desktop</label>
+            <label class="radio-opt" id="d-plat-2"><div class="radio-circle"><div class="radio-dot"></div></div>Mobile</label>
+            <label class="radio-opt" id="d-plat-3"><div class="radio-circle"><div class="radio-dot"></div></div>None</label>
+          </div>
+        </div>
+        <div id="d-cta-fields">
+          <div class="two-col">
+            <div>
+              <label class="field-label" for="d-copy">Copy</label>
+              <input class="field-input" type="text" id="d-copy" maxlength="50" value="Expert auto glass repair for a clear road ahead." oninput="updateCounter('d')">
+              <div class="char-hint" id="d-char-counter">50 / 50 characters</div>
+            </div>
+            <div>
+              <label class="field-label">Button Text</label>
+              <div class="select-wrap">
+                <select id="d-btn-text">
+                  <option value="" disabled>Select a Button Text</option>
+                  <option>Apply Now</option><option>Book Appointment</option><option>Book Now</option><option>Buy Tickets</option><option>Check Availability</option><option selected>Contact Us</option><option>Enroll Now</option><option>Get Directions</option><option>Get Offer</option><option>Get Quote</option><option>Join Now</option><option>Learn More</option><option>Make Reservation</option><option>Order Online</option><option>Print Coupon</option><option>Print Voucher</option><option>Reserve Now</option><option>Schedule Appointment</option><option>View Now</option><option>Visit Location</option>
+                </select>
+                <svg class="select-arrow" width="12" height="12" viewBox="0 0 12 12"><path fill="#666" d="M6 8L1 3h10z"/></svg>
+              </div>
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="d-url">URL</label>
+            <input class="field-input" type="text" id="d-url" value="https://westcoastwindscreens.com.au/" oninput="validateUrl('d')">
+            <div class="validation-msg" id="d-url-error">Please enter a valid HTTP or HTTPS URL</div>
+          </div>
+          <div class="two-col">
+            <div>
+              <label class="field-label">Start Date</label>
+              <div class="date-wrap">
+                <input class="field-input" type="text" id="d-start-date" value="6/22/2026">
+                <svg id="d-start-cal" class="cal-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="12" rx="2" stroke="#666" stroke-width="1.2" fill="none"/><line x1="1" y1="7" x2="15" y2="7" stroke="#666" stroke-width="1.2"/><line x1="5" y1="1" x2="5" y2="5" stroke="#666" stroke-width="1.2" stroke-linecap="round"/><line x1="11" y1="1" x2="11" y2="5" stroke="#666" stroke-width="1.2" stroke-linecap="round"/></svg>
+                <div class="picker-dropdown" id="d-start-picker"></div>
+              </div>
+            </div>
+            <div>
+              <label class="field-label">End Date</label>
+              <div class="date-wrap">
+                <input class="field-input" type="text" id="d-end-date" value="6/22/2027">
+                <svg id="d-end-cal" class="cal-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="12" rx="2" stroke="#666" stroke-width="1.2" fill="none"/><line x1="1" y1="7" x2="15" y2="7" stroke="#666" stroke-width="1.2"/><line x1="5" y1="1" x2="5" y2="5" stroke="#666" stroke-width="1.2" stroke-linecap="round"/><line x1="11" y1="1" x2="11" y2="5" stroke="#666" stroke-width="1.2" stroke-linecap="round"/></svg>
+                <div class="picker-dropdown" id="d-end-picker"></div>
+              </div>
+              <div class="validation-msg" id="d-date-error">End date must be on or after start date</div>
+            </div>
+          </div>
+          <hr class="divider">
+          <button id="d-remove-btn" onclick="removeCTA('d')" style="display:none;background-color:#e8521a;border:1px solid #d04918;border-radius:4px;color:#fff;font-size:12px;font-weight:600;padding:7px 14px;cursor:pointer;font-family:Arial,sans-serif;">Remove CTA</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EMPTY STATE -->
+  <div id="tab-empty" class="tab-content" style="display:none">
+    <div class="section-card">
+      <div class="section-header">
+        <div style="width:72px;flex-shrink:0"></div>
+        <span class="section-header-title">CALL TO ACTION</span>
+        <div class="header-side">
+          <div id="e-edit-btn" class="icon-btn" onclick="enterEdit('e')" title="Edit">&#9998;</div>
+          <div id="e-cancel-btn" class="icon-btn" onclick="exitEdit('e','cancel')" title="Cancel" style="display:none">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M13 3L8 8M3 13L8 8M8 8L3 3M8 8L13 13" stroke="#888" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div id="e-save-btn" class="icon-btn" onclick="exitEdit('e','save')" title="Save" style="display:none;background-color:#e8521a;border-color:#e8521a;">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="1.5" stroke="#fff" stroke-width="1.2" fill="none"/><rect x="5" y="2" width="6" height="4" rx="0.5" fill="#fff"/><rect x="3.5" y="8" width="9" height="5.5" rx="0.5" fill="#fff"/><rect x="5.5" y="9" width="2" height="3.5" rx="0.3" fill="#e8521a"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="field-group">
+          <span class="field-label">Platform</span>
+          <div class="radio-group" id="e-platform-group">
+            <label class="radio-opt" id="e-plat-0"><div class="radio-circle"><div class="radio-dot"></div></div>Desktop + Mobile</label>
+            <label class="radio-opt" id="e-plat-1"><div class="radio-circle"><div class="radio-dot"></div></div>Desktop</label>
+            <label class="radio-opt" id="e-plat-2"><div class="radio-circle"><div class="radio-dot"></div></div>Mobile</label>
+            <label class="radio-opt" id="e-plat-3"><div class="radio-circle" style="border-color:#e8521a"><div class="radio-dot" style="display:block"></div></div>None</label>
+          </div>
+        </div>
+        <div id="e-cta-fields" style="display:none">
+          <div class="two-col">
+            <div>
+              <label class="field-label" for="e-copy">Copy</label>
+              <input class="field-input" type="text" id="e-copy" maxlength="50" placeholder="Enter a CTA Description" oninput="updateCounter('e')">
+              <div class="char-hint" id="e-char-counter">0 / 50 characters</div>
+            </div>
+            <div>
+              <label class="field-label">Button Text</label>
+              <div class="select-wrap">
+                <select id="e-btn-text">
+                  <option value="" disabled selected>Select a Button Text</option>
+                  <option>Apply Now</option><option>Book Appointment</option><option>Book Now</option><option>Buy Tickets</option><option>Check Availability</option><option>Contact Us</option><option>Enroll Now</option><option>Get Directions</option><option>Get Offer</option><option>Get Quote</option><option>Join Now</option><option>Learn More</option><option>Make Reservation</option><option>Order Online</option><option>Print Coupon</option><option>Print Voucher</option><option>Reserve Now</option><option>Schedule Appointment</option><option>View Now</option><option>Visit Location</option>
+                </select>
+                <svg class="select-arrow" width="12" height="12" viewBox="0 0 12 12"><path fill="#666" d="M6 8L1 3h10z"/></svg>
+              </div>
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="e-url">URL</label>
+            <input class="field-input" type="text" id="e-url" placeholder="https://www.example.com" oninput="validateUrl('e')">
+            <div class="validation-msg" id="e-url-error">Please enter a valid HTTP or HTTPS URL</div>
+          </div>
+          <div class="two-col">
+            <div>
+              <label class="field-label">Start Date</label>
+              <div class="date-wrap">
+                <input class="field-input" type="text" id="e-start-date" placeholder="MM/DD/YYYY">
+                <svg id="e-start-cal" class="cal-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="12" rx="2" stroke="#666" stroke-width="1.2" fill="none"/><line x1="1" y1="7" x2="15" y2="7" stroke="#666" stroke-width="1.2"/><line x1="5" y1="1" x2="5" y2="5" stroke="#666" stroke-width="1.2" stroke-linecap="round"/><line x1="11" y1="1" x2="11" y2="5" stroke="#666" stroke-width="1.2" stroke-linecap="round"/></svg>
+                <div class="picker-dropdown" id="e-start-picker"></div>
+              </div>
+            </div>
+            <div>
+              <label class="field-label">End Date</label>
+              <div class="date-wrap">
+                <input class="field-input" type="text" id="e-end-date" placeholder="MM/DD/YYYY">
+                <svg id="e-end-cal" class="cal-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="12" rx="2" stroke="#666" stroke-width="1.2" fill="none"/><line x1="1" y1="7" x2="15" y2="7" stroke="#666" stroke-width="1.2"/><line x1="5" y1="1" x2="5" y2="5" stroke="#666" stroke-width="1.2" stroke-linecap="round"/><line x1="11" y1="1" x2="11" y2="5" stroke="#666" stroke-width="1.2" stroke-linecap="round"/></svg>
+                <div class="picker-dropdown" id="e-end-picker"></div>
+              </div>
+              <div class="validation-msg" id="e-date-error">End date must be on or after start date</div>
+            </div>
+          </div>
+          <hr class="divider">
+          <button id="e-remove-btn" style="display:none;background-color:#e8521a;border:1px solid #d04918;border-radius:4px;color:#fff;font-size:12px;font-weight:600;padding:7px 14px;cursor:pointer;font-family:Arial,sans-serif;">Remove CTA</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  var snapshots = { d: null, e: null };
+  var editMode = { d: false, e: false };
+  var MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var DAYS = ['Su','Mo','Tu','We','Th','Fr','Sa'];
+  var today = new Date();
+  var state = {
+    d: { start: { date: new Date(2026,5,22), picker: {year:2026,month:5} }, end: { date: new Date(2027,5,22), picker: {year:2027,month:5} }, endManual: false },
+    e: { start: { date: null, picker: {year:today.getFullYear(),month:today.getMonth()} }, end: { date: null, picker: {year:today.getFullYear()+1,month:today.getMonth()} }, endManual: false }
+  };
+
+  function setTabStyle(id, active) {
+    var el = document.getElementById(id);
+    el.style.backgroundColor = active ? '#e8521a' : '#fff';
+    el.style.color = active ? '#fff' : '#888';
+    el.style.border = active ? '1px solid #e8521a' : '1px solid #ddd';
+  }
+
+  function switchTab(tab) {
+    document.getElementById('tab-data').style.display = tab === 'data' ? 'block' : 'none';
+    document.getElementById('tab-empty').style.display = tab === 'empty' ? 'block' : 'none';
+    setTabStyle('btn-data', tab === 'data');
+    setTabStyle('btn-empty', tab === 'empty');
+  }
+
+  // Lock/unlock helpers — all done via JS, no CSS classes relied on
+  function lockField(id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.setAttribute('readonly', 'readonly');
+    el.style.cursor = 'default';
+    el.style.pointerEvents = 'none';
+  }
+  function unlockField(id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.removeAttribute('readonly');
+    el.style.cursor = '';
+    el.style.pointerEvents = '';
+  }
+  function lockSelect(id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.disabled = true;
+    el.style.cursor = 'default';
+    el.style.opacity = '1';
+  }
+  function unlockSelect(id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.disabled = false;
+    el.style.cursor = 'pointer';
+  }
+  function lockRadios(p) {
+    for (var i = 0; i < 4; i++) {
+      var el = document.getElementById(p+'-plat-'+i);
+      if (el) { el.style.pointerEvents = 'none'; el.style.opacity = '0.45'; el.style.cursor = 'not-allowed'; }
+    }
+  }
+  function unlockRadios(p) {
+    for (var i = 0; i < 4; i++) {
+      var el = document.getElementById(p+'-plat-'+i);
+      if (el) { el.style.pointerEvents = ''; el.style.opacity = ''; el.style.cursor = 'pointer'; }
+    }
+  }
+  function lockCal(id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.style.pointerEvents = 'none';
+    el.style.opacity = '0.5';
+    el.style.cursor = 'default';
+    el.onclick = null;
+  }
+  function unlockCal(id, p, which) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.style.pointerEvents = '';
+    el.style.opacity = '';
+    el.style.cursor = 'pointer';
+    el.onclick = function() { openPicker(p, which); };
+  }
+  function lockDateInput(id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.setAttribute('readonly', 'readonly');
+    el.style.cursor = 'default';
+    el.style.pointerEvents = 'none';
+    el.onclick = null;
+  }
+  function unlockDateInput(id, p, which) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.setAttribute('readonly', 'readonly'); // keep readonly but allow click
+    el.style.cursor = 'pointer';
+    el.style.pointerEvents = '';
+    el.onclick = function() { openPicker(p, which); };
+  }
+
+  function applyLocks(p) {
+    lockRadios(p);
+    lockField(p+'-copy');
+    lockSelect(p+'-btn-text');
+    lockField(p+'-url');
+    lockDateInput(p+'-start-date');
+    lockDateInput(p+'-end-date');
+    lockCal(p+'-start-cal');
+    lockCal(p+'-end-cal');
+  }
+  function applyUnlocks(p) {
+    unlockRadios(p);
+    unlockField(p+'-copy');
+    unlockSelect(p+'-btn-text');
+    unlockField(p+'-url');
+    unlockDateInput(p+'-start-date', p, 'start');
+    unlockDateInput(p+'-end-date', p, 'end');
+    unlockCal(p+'-start-cal', p, 'start');
+    unlockCal(p+'-end-cal', p, 'end');
+  }
+
+  function wireRadios(p) {
+    var show = [true, true, true, false];
+    for (var i = 0; i < 4; i++) {
+      (function(idx, s) {
+        var el = document.getElementById(p+'-plat-'+idx);
+        if (el) el.onclick = function() { if (editMode[p]) selectPlatform(p, idx, s); };
+      })(i, show[i]);
+    }
+  }
+
+  function saveSnapshot(p) {
+    var radios = [0,1,2,3];
+    var platformIndex = 3;
+    for (var i = 0; i < 4; i++) {
+      var dot = document.getElementById(p+'-plat-'+i);
+      if (dot && dot.querySelector('.radio-dot').style.display === 'block') platformIndex = i;
+    }
+    snapshots[p] = {
+      platformIndex: platformIndex,
+      copy: document.getElementById(p+'-copy').value,
+      btnText: document.getElementById(p+'-btn-text').selectedIndex,
+      url: document.getElementById(p+'-url').value,
+      startDate: document.getElementById(p+'-start-date').value,
+      endDate: document.getElementById(p+'-end-date').value,
+      ctaVisible: document.getElementById(p+'-cta-fields').style.display !== 'none',
+      startDateState: state[p].start.date ? new Date(state[p].start.date.getTime()) : null,
+      endDateState: state[p].end.date ? new Date(state[p].end.date.getTime()) : null,
+      endManual: state[p].endManual
+    };
+  }
+
+  function restoreSnapshot(p) {
+    var snap = snapshots[p];
+    if (!snap) return;
+    for (var i = 0; i < 4; i++) {
+      var lbl = document.getElementById(p+'-plat-'+i);
+      if (!lbl) continue;
+      lbl.querySelector('.radio-circle').style.borderColor = '#bbb';
+      lbl.querySelector('.radio-dot').style.display = 'none';
+    }
+    var sel = document.getElementById(p+'-plat-'+snap.platformIndex);
+    if (sel) {
+      sel.querySelector('.radio-circle').style.borderColor = '#e8521a';
+      sel.querySelector('.radio-dot').style.display = 'block';
+    }
+    document.getElementById(p+'-cta-fields').style.display = snap.ctaVisible ? 'block' : 'none';
+    document.getElementById(p+'-copy').value = snap.copy;
+    document.getElementById(p+'-btn-text').selectedIndex = snap.btnText;
+    document.getElementById(p+'-url').value = snap.url;
+    document.getElementById(p+'-start-date').value = snap.startDate;
+    document.getElementById(p+'-end-date').value = snap.endDate;
+    state[p].start.date = snap.startDateState;
+    state[p].end.date = snap.endDateState;
+    state[p].endManual = snap.endManual;
+    var v = snap.copy.length;
+    var counter = document.getElementById(p+'-char-counter');
+    if (counter) { counter.textContent = v + ' / 50 characters'; counter.style.color = v >= 45 ? '#e8521a' : '#888'; }
+    var rb = document.getElementById(p+'-remove-btn');
+    if (rb) rb.style.display = snap.ctaVisible ? 'inline-block' : 'none';
+  }
+
+  function enterEdit(p) {
+    saveSnapshot(p);
+    editMode[p] = true;
+    document.getElementById(p+'-edit-btn').style.display = 'none';
+    document.getElementById(p+'-cancel-btn').style.display = 'flex';
+    var sb = document.getElementById(p+'-save-btn');
+    sb.style.display = 'flex';
+    sb.style.backgroundColor = '#e8521a';
+    sb.style.borderColor = '#e8521a';
+    applyUnlocks(p);
+    if (p === 'd') {
+      var rb = document.getElementById('d-remove-btn');
+      if (document.getElementById('d-cta-fields').style.display !== 'none') rb.style.display = 'inline-block';
+    }
+  }
+
+  function exitEdit(p, action) {
+    editMode[p] = false;
+    document.getElementById(p+'-edit-btn').style.display = 'flex';
+    document.getElementById(p+'-cancel-btn').style.display = 'none';
+    document.getElementById(p+'-save-btn').style.display = 'none';
+    if (action === 'cancel') restoreSnapshot(p);
+    applyLocks(p);
+    var rb = document.getElementById(p+'-remove-btn');
+    if (rb) rb.style.display = 'none';
+    if (p === 'e' && action === 'cancel') {
+      document.querySelectorAll('#e-platform-group .radio-opt').forEach(function(el) { el.style.opacity = '0.45'; });
+    }
+    snapshots[p] = null;
+  }
+
+  function removeCTA(p) {
+    for (var i = 0; i < 4; i++) {
+      var lbl = document.getElementById(p+'-plat-'+i);
+      if (!lbl) continue;
+      lbl.querySelector('.radio-circle').style.borderColor = '#bbb';
+      lbl.querySelector('.radio-dot').style.display = 'none';
+    }
+    var noneOpt = document.getElementById(p+'-plat-3');
+    if (noneOpt) {
+      noneOpt.querySelector('.radio-circle').style.borderColor = '#e8521a';
+      noneOpt.querySelector('.radio-dot').style.display = 'block';
+    }
+    document.getElementById(p+'-cta-fields').style.display = 'none';
+    document.getElementById(p+'-remove-btn').style.display = 'none';
+    document.getElementById(p+'-copy').value = '';
+    var counter = document.getElementById(p+'-char-counter');
+    if (counter) { counter.textContent = '0 / 50 characters'; counter.style.color = '#888'; }
+    document.getElementById(p+'-btn-text').selectedIndex = 0;
+    document.getElementById(p+'-url').value = '';
+    document.getElementById(p+'-url-error').style.display = 'none';
+    document.getElementById(p+'-start-date').value = '';
+    document.getElementById(p+'-end-date').value = '';
+    document.getElementById(p+'-date-error').style.display = 'none';
+    // Keep Cancel and Save visible — do NOT exit edit mode
+  }
+
+  function selectPlatform(p, idx, show) {
+    for (var i = 0; i < 4; i++) {
+      var lbl = document.getElementById(p+'-plat-'+i);
+      if (!lbl) continue;
+      lbl.querySelector('.radio-circle').style.borderColor = '#bbb';
+      lbl.querySelector('.radio-dot').style.display = 'none';
+    }
+    var sel = document.getElementById(p+'-plat-'+idx);
+    if (sel) {
+      sel.querySelector('.radio-circle').style.borderColor = '#e8521a';
+      sel.querySelector('.radio-dot').style.display = 'block';
+    }
+    document.getElementById(p+'-cta-fields').style.display = show ? 'block' : 'none';
+    var rb = document.getElementById(p+'-remove-btn');
+    if (rb) rb.style.display = show ? 'inline-block' : 'none';
+  }
+
+  function updateCounter(p) {
+    var v = document.getElementById(p+'-copy').value.length;
+    var el = document.getElementById(p+'-char-counter');
+    if (!el) return;
+    el.textContent = v + ' / 50 characters';
+    el.style.color = v >= 45 ? '#e8521a' : '#888';
+  }
+
+  function validateUrl(p) {
+    var v = document.getElementById(p+'-url').value.trim();
+    var err = document.getElementById(p+'-url-error');
+    if (!v) { err.style.display = 'none'; return; }
+    try { var u = new URL(v); err.style.display = (u.protocol === 'http:' || u.protocol === 'https:') ? 'none' : 'block'; }
+    catch(e) { err.style.display = 'block'; }
+  }
+
+  function fmt(d) { return d ? (d.getMonth()+1)+'/'+d.getDate()+'/'+d.getFullYear() : ''; }
+
+  function openPicker(p, which) {
+    var other = which === 'start' ? 'end' : 'start';
+    document.getElementById(p+'-'+other+'-picker').style.display = 'none';
+    var el = document.getElementById(p+'-'+which+'-picker');
+    if (el.style.display === 'block') { el.style.display = 'none'; return; }
+    renderPicker(p, which);
+    el.style.display = 'block';
+  }
+
+  function renderPicker(p, which) {
+    var s = state[p][which].picker;
+    var el = document.getElementById(p+'-'+which+'-picker');
+    var selected = state[p][which].date;
+    var firstDay = new Date(s.year, s.month, 1).getDay();
+    var dim = new Date(s.year, s.month+1, 0).getDate();
+    var html = '<div class="picker-header"><button class="picker-nav" onclick="changeMonth(\''+p+'\',\''+which+'\',-1)">&#8249;</button><span class="picker-month-label">'+MONTHS[s.month]+' '+s.year+'</span><button class="picker-nav" onclick="changeMonth(\''+p+'\',\''+which+'\',1)">&#8250;</button></div><div class="picker-grid">';
+    for (var i = 0; i < 7; i++) html += '<div class="picker-day-header">'+DAYS[i]+'</div>';
+    for (var i = 0; i < firstDay; i++) html += '<div class="picker-day empty"></div>';
+    for (var d = 1; d <= dim; d++) {
+      var isSel = selected && selected.getFullYear()===s.year && selected.getMonth()===s.month && selected.getDate()===d;
+      var isT = today.getFullYear()===s.year && today.getMonth()===s.month && today.getDate()===d;
+      var cls = isSel ? 'selected' : isT ? 'today' : '';
+      var bg = isSel ? 'style="background-color:#e8521a;color:#fff;"' : '';
+      html += '<div class="picker-day '+cls+'" '+bg+' onclick="selectDay(\''+p+'\',\''+which+'\','+d+')">'+d+'</div>';
+    }
+    html += '</div>';
+    el.innerHTML = html;
+  }
+
+  function changeMonth(p, which, dir) {
+    var s = state[p][which].picker;
+    s.month += dir;
+    if (s.month > 11) { s.month = 0; s.year++; }
+    if (s.month < 0)  { s.month = 11; s.year--; }
+    renderPicker(p, which);
+  }
+
+  function selectDay(p, which, day) {
+    var s = state[p][which].picker;
+    var chosen = new Date(s.year, s.month, day);
+    state[p][which].date = chosen;
+    document.getElementById(p+'-'+which+'-date').value = fmt(chosen);
+    if (which === 'start' && !state[p].endManual) {
+      var ed = new Date(chosen.getTime()); ed.setFullYear(ed.getFullYear()+1);
+      state[p].end.date = ed;
+      state[p].end.picker = {year: ed.getFullYear(), month: ed.getMonth()};
+      document.getElementById(p+'-end-date').value = fmt(ed);
+    }
+    if (which === 'end') {
+      state[p].endManual = true;
+      document.getElementById(p+'-date-error').style.display = (state[p].start.date && chosen < state[p].start.date) ? 'block' : 'none';
+    }
+    document.getElementById(p+'-'+which+'-picker').style.display = 'none';
+  }
+
+  document.addEventListener('click', function(e) {
+    ['d','e'].forEach(function(p) {
+      ['start','end'].forEach(function(w) {
+        var picker = document.getElementById(p+'-'+w+'-picker');
+        var input = document.getElementById(p+'-'+w+'-date');
+        var cal = document.getElementById(p+'-'+w+'-cal');
+        if (picker && !picker.contains(e.target) && e.target !== input && e.target !== cal && !cal.contains(e.target)) {
+          picker.style.display = 'none';
+        }
+      });
+    });
+  });
+
+  // Initialize on load — lock everything and set tab styles
+  window.onload = function() {
+    setTabStyle('btn-data', true);
+    setTabStyle('btn-empty', false);
+    applyLocks('d');
+    applyLocks('e');
+    wireRadios('d');
+    wireRadios('e');
+    updateCounter('d');
+  };
+</script>
+</body>
+</html>
